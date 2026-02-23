@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { UserPage } from "@/pages/login/ui/UserPage";
+import { UsersPage } from "@/pages/login/ui/UsersPage";
 import { PrivateRoute } from "./PivateRoute";
 import { NotFoundPage } from "@/pages/login/ui/NotFoundPage";
 import { LoginPage } from "@/pages/login/ui/LoginPage";
@@ -15,7 +15,7 @@ export const AppRouter = () => {
         path="/users"
         element={
           <PrivateRoute>
-            <UserPage />
+            <UsersPage />
           </PrivateRoute>
         }
       />
