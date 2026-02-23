@@ -1,5 +1,20 @@
-import React from "react";
+import { LoginForm } from "@/features/auth/ui/LoginForm";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const LoginPage = () => {
-  return <div>Login Page</div>;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/users");
+    }
+  }, [navigate]);
+
+  return (
+    <div>
+      <LoginForm />
+    </div>
+  );
 };
