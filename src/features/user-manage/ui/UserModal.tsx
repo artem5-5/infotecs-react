@@ -1,7 +1,33 @@
 import React, { useEffect } from "react";
 import { Modal, Form, Input, Button } from "antd";
+import styled from "styled-components";
 import { User } from "@/entities/user/model/types";
-import { useCreateUser, useDeleteUser, useUpdateUser } from "../model/useUserMutations";
+import {
+  useCreateUser,
+  useDeleteUser,
+  useUpdateUser,
+} from "../model/useUserMutations";
+
+const StyledModal = styled(Modal)`
+  .ant-modal-content {
+    border-radius: 12px;
+    padding: 24px 32px;
+  }
+`;
+
+const StyledButton = styled(Button)`
+  width: 100px;
+  background-color: #2f5f86;
+  border: none;
+  color: #fff;
+
+  &:hover {
+    background-color: #244b6a !important;
+  }
+`;
+const StyledInput = styled(Input)`
+  height: 38px;
+`;
 
 interface Props {
   open: boolean;
@@ -14,7 +40,7 @@ export const UserModal = ({ open, onClose, user }: Props) => {
 
   const createMutation = useCreateUser();
   const updateMutation = useUpdateUser();
-  const deleteMutation = useDeleteUser()
+  const deleteMutation = useDeleteUser();
 
   const isEdit = Boolean(user);
   const isLoading = createMutation.isLoading || updateMutation.isLoading;
@@ -40,26 +66,24 @@ export const UserModal = ({ open, onClose, user }: Props) => {
 
     onClose();
   };
-  
+
   const handleDelete = () => {
-    if (user?.id) {
-      deleteMutation.mutate(String(user.id), {
-        onSuccess: () => {
-          onClose();
-        },
-      });
-    }
+    if (!user) return;
+    deleteMutation.mutate(String(user.id));
+    onClose();
   };
 
   return (
-    <Modal
-      title={isEdit ? "Редактирование" : "Создание"}
+    <StyledModal
+      width={520}
+      title={isEdit ? "Редактирование" : "Создание пользователя"}
       open={open}
       onOk={handleSubmit}
       onCancel={onClose}
       confirmLoading={isLoading}
       maskClosable={!isLoading}
       closable={!isLoading}
+      footer={null}
     >
       <Form form={form} layout="vertical">
         {isEdit && (
@@ -73,27 +97,46 @@ export const UserModal = ({ open, onClose, user }: Props) => {
           name="name"
           rules={[{ required: true, message: "Введите имя" }]}
         >
-          <Input />
+          <StyledInput />
         </Form.Item>
 
         <Form.Item
-          label="Аватар"
+          label="Ссылка на аватарку"
           name="avatar"
           rules={[
             { required: true, message: "Введите ссылку" },
             { type: "url", message: "Некорректная ссылка" },
           ]}
         >
-          <Input />
+          <StyledInput />
         </Form.Item>
-        <Button
-          danger
-          onClick={handleDelete}
-          loading={deleteMutation.isLoading}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: 24,
+          }}
         >
-          Удалить
-        </Button>
+          {isEdit && (
+            <Button onClick={handleDelete} danger>
+              Удалить
+            </Button>
+          )}
+
+          <div>
+            <StyledButton
+              type="primary"
+              loading={isLoading}
+              style={{ marginRight: 8 }}
+              onClick={handleSubmit}
+            >
+              {isEdit ? "Сохранить" : "Создать"}
+            </StyledButton>
+
+            <StyledButton onClick={onClose}>Отмена</StyledButton>
+          </div>
+        </div>
       </Form>
-    </Modal>
+    </StyledModal>
   );
 };
