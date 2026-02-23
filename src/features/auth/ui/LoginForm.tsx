@@ -1,7 +1,18 @@
 import React from "react";
 import { Form, Input, Button, notification } from "antd";
 import { useNavigate } from "react-router-dom";
+import styled from 'styled-components'
 import { useLogin } from "../model/useLogin";
+
+const StyledButton = styled(Button)`
+  width: 100px;
+  background-color: #2f5f86;
+  border: none;
+
+  &:hover {
+    background-color: #244b6a !important;
+  }
+`
 
 export const LoginForm = () => {
   const loginMutation = useLogin();
@@ -37,14 +48,14 @@ export const LoginForm = () => {
       >
         <Input.Password />
       </Form.Item>
-      <Button
+      <StyledButton
         type="primary"
         htmlType="submit"
         loading={loginMutation.isLoading}
         disabled={loginMutation.isLoading}
       >
         Login
-      </Button>
+      </StyledButton>
     </Form>
   );
 };
