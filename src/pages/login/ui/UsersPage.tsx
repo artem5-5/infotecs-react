@@ -101,7 +101,6 @@ export const UsersPage = () => {
         rowKey="id"
         showHeader={false}
         style={{ tableLayout: "fixed" }}
-        pagination={{ pageSize: 5 }}
         columns={[
           {
             dataIndex: "name",

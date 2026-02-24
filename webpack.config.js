@@ -31,9 +31,11 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     port: 3000,
-    overlay: {
-      errors: true,
-      warnings: false,
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
     },
   },
   output: {
